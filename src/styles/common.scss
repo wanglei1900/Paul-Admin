@@ -1,0 +1,82 @@
+/* flex 相关 */
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.flex-space-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.flex-align-center {
+    display: flex;
+    align-items: center;
+}
+
+/* clearfix */
+.clearfix::after {
+    display: block;
+    height: 0;
+    overflow: hidden;
+    clear: both;
+    content: "";
+}
+
+/* 文字单行省略号 */
+.sle {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* 文字多行省略号 */
+.mle {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+/* 文字多了自动换行 */
+.break-word {
+    word-break: break-all;
+    word-wrap: break-word;
+}
+
+/* 面包屑动画 */
+.breadcrumb-enter-active,
+.breadcrumb-leave-active {
+    transition: all 0.2s ease;
+}
+
+.breadcrumb-enter-from,
+.breadcrumb-leave-from {
+    opacity: 0;
+    transform: translateX(10px);
+}
+
+.breadcrumb-leave-active {
+    position: absolute;
+    z-index: -1;
+}
+
+/* 滚动条 */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    background-color: white;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #dddee0;
+    border-radius: 20px;
+    box-shadow: inset 0 0 0 white;
+}
+
+/* 进度条 */
+#nprogress .bar{
+    // background: ;
+}

@@ -3,11 +3,11 @@ import { createHtmlPlugin } from "vite-plugin-html";
 import vue from "@vitejs/plugin-vue";
 import { resolve } from "path";
 
-// import { wrapperEnv } from "./src/utils/getEnv";
+import { wrapperEnv } from "./src/utils/getEnv";
 // import { visualizer } from "rollup-plugin-visualizer";
 // import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
 // import viteCompression from "vite-plugin-compression";
-// import VueSetupExtend from "vite-plugin-vue-setup-extend";
+import VueSetupExtend from "vite-plugin-vue-setup-extend";
 // import eslintPlugin from "vite-plugin-eslint";
 // import vueJsx from "@vitejs/plugin-vue-jsx";
 // import importToCDN from "vite-plugin-cdn-import";
@@ -20,7 +20,7 @@ import { resolve } from "path";
 // @see: https://vitejs.dev/config/
 export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
 	const env = loadEnv(mode, process.cwd());
-	// const viteEnv = wrapperEnv(env);
+	const viteEnv = wrapperEnv(env);
 
 	return {
 		base: "./",
@@ -37,22 +37,22 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
 		// 		}
 		// 	}
 		// },
-		// server: {
-		// 	// 服务器主机名，如果允许外部访问，可设置为 "0.0.0.0"
-		// 	host: "0.0.0.0",
-		// 	port: viteEnv.VITE_PORT,
-		// 	open: viteEnv.VITE_OPEN,
-		// 	cors: true,
-		// 	// 代理跨域（mock 不需要配置跨域，直接能访问，这里只是个示例）
-		// 	proxy: {
-		// 		"/api": {
-		// 			// target: "https://www.fastmock.site/mock/f81e8333c1a9276214bcdbc170d9e0a0", // fastmock
-		// 			target: "https://mock.mengxuegu.com/mock/629d727e6163854a32e8307e", // easymock
-		// 			changeOrigin: true,
-		// 			rewrite: path => path.replace(/^\/api/, "")
-		// 		}
-		// 	}
-		// },
+		server: {
+			// 服务器主机名，如果允许外部访问，可设置为 "0.0.0.0"
+			host: "0.0.0.0",
+			port: viteEnv.VITE_PORT,
+			open: viteEnv.VITE_OPEN,
+			cors: true,
+			// 代理跨域（mock 不需要配置跨域，直接能访问，这里只是个示例）
+			proxy: {
+				"/api": {
+					// target: "https://www.fastmock.site/mock/f81e8333c1a9276214bcdbc170d9e0a0", // fastmock
+					target: "https://mock.mengxuegu.com/mock/629d727e6163854a32e8307e", // easymock
+					changeOrigin: true,
+					rewrite: path => path.replace(/^\/api/, "")
+				}
+			}
+		},
 		plugins: [
 			vue(),
 			// createHtmlPlugin({
@@ -72,7 +72,7 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
 			// * vite 可以使用 jsx/tsx 语法
 			// vueJsx(),
 			// * name 可以写在 script 标签上
-			// VueSetupExtend(),
+			VueSetupExtend(),
 			// * 是否生成包预览(分析依赖包大小,方便做优化处理)
 			// viteEnv.VITE_REPORT && visualizer(),
 			// * gzip compress

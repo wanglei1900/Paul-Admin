@@ -1,0 +1,33 @@
+.el-container{
+    width: 100%;
+    height: 100%;
+    .el-aside{
+        width: auto;
+        overflow: inherit;
+        // height: 100%;
+        background-color: rgba(30, 39, 46,1.0);
+        border-right: 1px solid rgba(30, 39, 46,1.0);
+        .menu{
+            display: flex;
+            flex-flow: column nowrap;
+            height: 100%;
+            .logo{
+                height: 55px;
+                box-sizing: border-box;
+                border-bottom: 1px solid rgba(52, 73, 94,1);
+
+                span{
+                    font-size: 25px;
+                    font-weight: bold;
+                    color: rgba(189, 195, 199,1);
+                    white-space: nowrap;
+                }
+                img{
+                    width: 28px;
+                    object-fit: contain;
+                    margin-right: 10px;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,42 @@
+.el-main {
+  box-sizing: border-box;
+  padding: 10px 12px;
+  overflow-x: hidden;
+  background: rgba(210, 218, 226, 1.0);
+
+  &::-webkit-scrollbar {
+    background-color: rgba(210, 218, 226, 1.0);
+  }
+}
+
+.el-footer {
+  height: auto;
+  padding: 0;
+}
+
+.maximize {
+  position: fixed;
+  top: -25px;
+  left: 50%;
+  z-index: 999;
+  width: 45px;
+  height: 45px;
+  transform: translateX(-50%);
+  background-color: #dfe6e9;
+  opacity: 0.7;
+  cursor: pointer;
+  border-radius: 50%;
+
+  &:hover {
+
+    background-color: #b2bec3;
+  }
+
+  .el-icon {
+    position: relative;
+    top: 70%;
+    left: 50%;
+    font-size: 16px;
+    transform: translate(-50%, -50%);
+  }
+}

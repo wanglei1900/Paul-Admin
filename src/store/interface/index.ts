@@ -1,7 +1,7 @@
 /*
  * @Author: paul
  * @Date: 2022-11-11 22:14:56
- * @LastEditTime: 2022-11-18 22:31:19
+ * @LastEditTime: 2022-11-20 21:43:11
  * @LastEditors: your name
  * @Description: pinia仓库 interface管理处
  * @FilePath: \Paul-Admin\src\store\interface\index.ts
@@ -24,10 +24,19 @@ export interface ThemeConfigProps {
 	maximize: boolean;
 }
 
-// GlobalState
+/* GlobalState */
 export interface GlobalState {
-    token: string
-    userInfo: any
-    themeConfig: ThemeConfigProps;
+	token: string
+	userInfo: any
+	themeConfig: ThemeConfigProps;
 }
 
+/* AuthState */
+export interface AuthState {
+	authButtonList: {
+		[key: string]: {
+			[key: string]: boolean
+		}
+	}
+	authMenuList: Menu.menuOptions[]
+}

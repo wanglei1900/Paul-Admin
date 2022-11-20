@@ -1,7 +1,7 @@
 /*
  * @Author: paul
  * @Date: 2022-11-11 22:02:27
- * @LastEditTime: 2022-11-18 22:40:06
+ * @LastEditTime: 2022-11-19 22:08:11
  * @LastEditors: your name
  * @Description: pinia仓库
  * @FilePath: \Paul-Admin\src\store\index.ts
@@ -55,7 +55,7 @@ export const GlobalStore = defineStore({
             this.userInfo = userInfo
         },
         setThemeConfig(themeConfig: ThemeConfigProps) {
-            this.themeConfig = this.themeConfig
+            this.themeConfig = themeConfig
         }
     },
     getters: {

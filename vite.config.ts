@@ -30,13 +30,14 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
 				// "vue-i18n": "vue-i18n/dist/vue-i18n.cjs.js"
 			}
 		},
-		// css: {
-		// 	preprocessorOptions: {
-		// 		scss: {
-		// 			additionalData: `@import "@/styles/var.scss";`
-		// 		}
-		// 	}
-		// },
+		// * 申明全局scss变量
+		css: {
+			preprocessorOptions: {
+				scss: {
+					additionalData: `@import "@/styles/var.scss";`
+				}
+			}
+		},
 		server: {
 			// 服务器主机名，如果允许外部访问，可设置为 "0.0.0.0"
 			host: "0.0.0.0",

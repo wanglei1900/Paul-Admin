@@ -1,7 +1,7 @@
 /*
  * @Author: paul
  * @Date: 2022-11-12 13:37:00
- * @LastEditTime: 2022-11-17 22:13:29
+ * @LastEditTime: 2022-11-20 22:30:33
  * @LastEditors: your name
  * @Description: 路由器
  * @FilePath: \Paul-Admin\src\routers\index.ts
@@ -10,10 +10,13 @@
 
 import { createRouter, createWebHashHistory } from "vue-router"
 import { GlobalStore } from "@/store";
+import { AuthStore } from "@/store/modules/auth";
 import { staticRouter } from "@/routers/modules/staticRouter";
+import { initDynamicRouter } from "@/routers/modules/dynamicRouter";
 import { LOGIN_URL } from "@/config/config";
 import { AxiosCanceler } from "@/api/helper/axiosCancel";
 import NProgress from "@/config/nprogress";
+import { ElNotification } from "element-plus";
 
 const axiosCanceler = new AxiosCanceler()
 
@@ -27,7 +30,7 @@ const router = createRouter({
 /**
  * @description: 路由拦截  beforeEach
  */
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
     // 1.NProgress 开始
     NProgress.start()
 
@@ -42,7 +45,11 @@ router.beforeEach((to, from, next) => {
     if (!globalStore.token) return next({ path: LOGIN_URL, replace: true })
 
     // todo5.如果没有菜单列表，就重新请求菜单列表并添加动态路由
-
+    const authStore = AuthStore()
+    if (!authStore.authMenuListGet.length) {
+        await initDynamicRouter()
+        return next({ ...to, replace: true })
+    }
     // 6.放行页面
     next()
 })
@@ -57,7 +64,13 @@ router.afterEach(() => {
 /**
  * @description: 路由跳转错误
  */
-// ! 还未做
+router.onError(error => {
+    NProgress.done();
+    ElNotification({
+        title: "路由错误",
+        message: error.message
+    })
+})
 
 
 export default router

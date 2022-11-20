@@ -4,13 +4,13 @@
     .el-aside{
         width: auto;
         overflow: inherit;
-        // height: 100%;
         background-color: rgba(30, 39, 46,1.0);
         border-right: 1px solid rgba(30, 39, 46,1.0);
         .menu{
             display: flex;
             flex-flow: column nowrap;
             height: 100%;
+            transition: all 0.5s ease;
             .logo{
                 height: 55px;
                 box-sizing: border-box;
@@ -29,5 +29,12 @@
                 }
             }
         }
+    }
+    .el-header {
+        box-sizing: border-box;
+        height: 55px;
+        padding: 0 15px;
+        background-color: #ffffff;
+        border-bottom: 1px solid #f1f1f1;
     }
 }

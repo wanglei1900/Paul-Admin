@@ -1,0 +1,14 @@
+<template>
+    <div class="flex-center">
+        <CollapseIcon />
+    </div>
+</template>
+
+<script setup lang='ts'>
+import { ref, reactive } from 'vue';
+import CollapseIcon from "@/layouts/components/Header/components/CollapseIcon.vue";
+</script>
+
+<style lang='scss' scoped>
+@import "./index.scss";
+</style>

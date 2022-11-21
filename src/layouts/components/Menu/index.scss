@@ -1,0 +1,15 @@
+.el-menu-item {
+    &.is-active {
+        background: #2C3A47;
+        &::before {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            width: 4px;
+            content: "";
+            // background: var(--el-color-success);
+            background: #42b883;
+        }
+    }
+}

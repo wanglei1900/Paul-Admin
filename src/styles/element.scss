@@ -8,3 +8,13 @@
 		display: none !important;
 	}
 }
+
+// * card 卡片样式
+.card {
+	box-sizing: border-box;
+	padding: 20px;
+	border-radius: 4px;
+	background-color: transparent;
+	border: 1px solid #414243;
+	box-shadow: 0 0 12px rgb(0 0 0 / 5%);
+}

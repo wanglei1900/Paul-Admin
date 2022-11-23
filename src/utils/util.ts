@@ -1,7 +1,7 @@
 /*
  * @Author: paul
  * @Date: 2022-11-14 22:33:46
- * @LastEditTime: 2022-11-20 21:55:50
+ * @LastEditTime: 2022-11-22 22:51:51
  * @LastEditors: your name
  * @Description: 常用公共方法
  * @FilePath: \Paul-Admin\src\utils\util.ts
@@ -36,4 +36,12 @@ export function getShowMenuList(menuList: Menu.menuOptions[]) {
         item.children?.length && (item.children = getShowMenuList(item.children))
         return !item.meta.isHide
     })
+}
+
+export function getFlatArr(menuList: Menu.menuOptions[]) {
+    return menuList.reduce((prev: Menu.menuOptions[], current: Menu.menuOptions) => {
+        let flatArr = [...prev, current]
+        if (current.children) flatArr = [...flatArr, ...getFlatArr(current.children)]
+        return flatArr
+    }, [])
 }

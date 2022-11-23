@@ -1,7 +1,7 @@
 /*
  * @Author: paul
  * @Date: 2022-11-20 21:57:04
- * @LastEditTime: 2022-11-20 23:02:28
+ * @LastEditTime: 2022-11-22 23:23:05
  * @LastEditors: your name
  ! @Description: 动态路由表
  * @FilePath: \Paul-Admin\src\routers\modules\dynamicRouter.ts
@@ -12,7 +12,13 @@ import { AuthStore } from "@/store/modules/auth";
 import { LOGIN_URL } from "@/config/config";
 import { ElNotification } from "element-plus";
 import router from "@/routers";
+import { getFlatArr } from "@/utils/util";
 
+// 引入 views 文件夹下所有的 vue 文件
+const modules = import.meta.glob("@/views/**/*.vue");
+console.log(modules);
+
+/* 初始化动态路由 */
 export const initDynamicRouter = async () => {
     try {
         // 1.获取菜单列表 && 按钮权限
@@ -31,6 +37,21 @@ export const initDynamicRouter = async () => {
             router.replace(LOGIN_URL)
             return Promise.reject("No permission")
         }
+
+        // 3.添加动态路由（通过getFlatArr 方法把菜单全部处理成一维数组，方便添加动态路由
+        let dynamicRouter = getFlatArr(JSON.parse(JSON.stringify(authStore.authMenuList)))
+        dynamicRouter.forEach((item: any) => {
+            if (item.children) delete item.children
+            if (item.component) item.component = modules["/src/views" + item.component + ".vue"]
+			// 判断是否为全屏路由
+			if (item.meta.isFull) {
+				router.addRoute(item);
+			} else {
+				// 添加到父路由layout下面添加新的路由
+				router.addRoute("layout", item);
+			}
+        })
+
 
     } catch (error) {
         // 当按钮和菜单 请求出错时，重定向到登录页

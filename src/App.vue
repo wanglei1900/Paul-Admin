@@ -8,8 +8,4 @@ import login from "@/views/login/index.vue"
 
 
 
-<style lang="scss" scoped>
-.a{
-    color:#90a4ae
-}
-</style>
+<style lang="scss" scoped></style>

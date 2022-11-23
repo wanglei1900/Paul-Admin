@@ -1,7 +1,7 @@
 /*
  * @Author: paul
  * @Date: 2022-11-12 14:19:46
- * @LastEditTime: 2022-11-18 21:46:29
+ * @LastEditTime: 2022-11-22 23:25:54
  * @LastEditors: your name
  ! @Description: 静态路由表和错误路由页面
  * @FilePath: \Paul-Admin\src\routers\modules\staticRouter.ts
@@ -36,3 +36,5 @@ export const staticRouter: RouteRecordRaw[] = [
         children: []
     }
 ]
+
+

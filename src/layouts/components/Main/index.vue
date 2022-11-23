@@ -1,7 +1,12 @@
 <template>
     <Maximize v-if="themeConfig.maximize" />
     <el-main>
-        <router-view></router-view>
+        <!-- 参考文章  https://router.vuejs.org/zh/api/#router-view-%E7%9A%84-v-slot -->
+        <router-view v-slot="{ Component, route }">
+            <transition appear name="fade-transform" mode="out-in">
+                <component :is="Component" :key="route.path" />
+            </transition>
+        </router-view>
     </el-main>
     <el-footer>
         <Footer />
@@ -9,11 +14,13 @@
 </template>
 
 <script setup lang='ts'>
-import { ref, reactive, computed, onBeforeUnmount } from 'vue';
+import { ref, computed, onBeforeUnmount } from 'vue';
 import { GlobalStore } from "@/store";
-import Footer from "@/layouts/components/Footer/index.vue";
+import { AuthStore } from "@/store/modules/auth";
 import Maximize from "@/layouts/components/Main/components/Maximize.vue";
+import Footer from "@/layouts/components/Footer/index.vue";
 
+const authStore = AuthStore()
 const globalStore = GlobalStore()
 const themeConfig = computed(() => globalStore.themeConfig)
 const isCollapse = computed(() => globalStore.themeConfig.isCollapse)

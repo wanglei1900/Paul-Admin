@@ -10,12 +10,12 @@
             <SubMenu :menuList="subItem.children" />
         </el-sub-menu>
         <el-menu-item v-else :index="subItem.path" @click="clickMenu(subItem)">
-            <template #title>
+            <!-- <template #title> -->
                 <el-icon>
                     <component :is="subItem.meta.icon"></component>
                 </el-icon>
                 <span>{{ subItem.meta.title }}</span>
-            </template>
+            <!-- </template> -->
         </el-menu-item>
     </template>
 </template>

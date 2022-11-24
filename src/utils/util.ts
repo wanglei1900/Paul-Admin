@@ -1,7 +1,7 @@
 /*
  * @Author: paul
  * @Date: 2022-11-14 22:33:46
- * @LastEditTime: 2022-11-22 22:51:51
+ * @LastEditTime: 2022-11-24 22:50:56
  * @LastEditors: your name
  * @Description: 常用公共方法
  * @FilePath: \Paul-Admin\src\utils\util.ts
@@ -38,10 +38,24 @@ export function getShowMenuList(menuList: Menu.menuOptions[]) {
     })
 }
 
+/**
+ * @description: 扁平化数组对象（只要用来处理路由菜单）
+ * @param {Array} menuList 所有菜单列表
+ * @return Array
+ */
 export function getFlatArr(menuList: Menu.menuOptions[]) {
     return menuList.reduce((prev: Menu.menuOptions[], current: Menu.menuOptions) => {
         let flatArr = [...prev, current]
         if (current.children) flatArr = [...flatArr, ...getFlatArr(current.children)]
         return flatArr
     }, [])
+}
+
+export function getKeepAliveRouterName(menuList: Menu.menuOptions[]){
+    let keepAliveArr:string[] = []
+    menuList.forEach(item => {
+        item.meta.isKeepAlive && item.name && keepAliveArr.push(item.name)
+        item.children?.length && getKeepAliveRouterName(item.children)
+    });
+    return keepAliveArr
 }

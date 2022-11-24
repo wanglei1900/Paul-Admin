@@ -11,6 +11,13 @@
             flex-flow: column nowrap;
             height: 100%;
             transition: all 0.5s ease;
+			.el-scrollbar {
+				height: calc(100% - 55px);
+				.el-menu {
+					overflow-x: hidden;
+					border-right: none;
+				}
+			}
             .logo{
                 height: 55px;
                 box-sizing: border-box;

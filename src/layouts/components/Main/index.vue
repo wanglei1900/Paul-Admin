@@ -4,7 +4,9 @@
         <!-- 参考文章  https://router.vuejs.org/zh/api/#router-view-%E7%9A%84-v-slot -->
         <router-view v-slot="{ Component, route }">
             <transition appear name="fade-transform" mode="out-in">
-                <component :is="Component" :key="route.path" />
+                <keep-alive :include="authStore.keepAliveRouterGet" >
+                    <component :is="Component" :key="route.path" />
+                </keep-alive>
             </transition>
         </router-view>
     </el-main>

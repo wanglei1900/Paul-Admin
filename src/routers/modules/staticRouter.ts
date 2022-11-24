@@ -1,7 +1,7 @@
 /*
  * @Author: paul
  * @Date: 2022-11-12 14:19:46
- * @LastEditTime: 2022-11-22 23:25:54
+ * @LastEditTime: 2022-11-24 22:32:48
  * @LastEditors: your name
  ! @Description: 静态路由表和错误路由页面
  * @FilePath: \Paul-Admin\src\routers\modules\staticRouter.ts
@@ -29,10 +29,10 @@ export const staticRouter: RouteRecordRaw[] = [
     },
     // 主页框架
     {
-        path: HOME_URL,
+        path: "/layout",
         name: "layout",
         component: () => import("@/layouts/LayoutVertical/index.vue"),
-        // redirect: HOME_URL,
+        redirect: HOME_URL,
         children: []
     }
 ]

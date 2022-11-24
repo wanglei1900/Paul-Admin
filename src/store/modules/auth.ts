@@ -1,7 +1,7 @@
 /*
  * @Author: paul
  * @Date: 2022-11-20 17:10:37
- * @LastEditTime: 2022-11-20 22:34:30
+ * @LastEditTime: 2022-11-24 22:51:29
  * @LastEditors: your name
  * @Description: 权限相关的仓库
  * @FilePath: \Paul-Admin\src\store\modules\auth.ts
@@ -10,7 +10,7 @@
 import { defineStore } from "pinia";
 import { AuthState } from "@/store/interface";
 import { getAuthButtonListApi, getAuthMenuListApi } from "@/api/modules/login";
-import { getShowMenuList } from "@/utils/util";
+import { getKeepAliveRouterName, getShowMenuList } from "@/utils/util";
 import piniaPersistConfig from "@/config/piniaPersist";
 
 export const AuthStore = defineStore({
@@ -38,7 +38,9 @@ export const AuthStore = defineStore({
         // 后端返回的菜单列表
         authMenuListGet: state => state.authMenuList,
         // 后端返回的菜单列表 ，左侧菜单栏的渲染需要剔除 isHide == true
-        showMenuListGet: state => getShowMenuList(state.authMenuList)
+        showMenuListGet: state => getShowMenuList(state.authMenuList),
+        // 需要缓存的菜单 name， 用作页面 keepalive
+        keepAliveRouterGet: state => getKeepAliveRouterName(state.authMenuList)
     },
     persist: piniaPersistConfig("AuthState", ["authButtonList"])
 })

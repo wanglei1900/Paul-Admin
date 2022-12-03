@@ -1,9 +1,20 @@
 <template>
-
+<div class="tool-bar-ri">
+    <div class="header-icon">
+        <SearchMenu />
+        <Message />
+        <FullScreen />
+    </div>
+    <span class="username">Paul</span>
+    <Avatar />
+</div>
 </template>
 
 <script setup lang='ts'>
-import { ref, reactive } from 'vue';
+import SearchMenu from "./components/SearchMenu.vue";
+import Message from "./components/Message.vue";
+import FullScreen from "./components/FullScreen.vue";
+import Avatar from "./components/Avatar.vue";
 
 </script>
 

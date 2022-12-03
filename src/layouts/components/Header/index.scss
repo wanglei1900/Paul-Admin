@@ -1,5 +1,124 @@
-// 折叠图标
-.collapse-icon{
-    font-size: 25px;
-    cursor: pointer;
+// *ToolBarLeft.vue
+// 【CollapseIcon.vue】折叠图标
+.collapse-icon {
+	margin-right: 20px;
+	font-size: 22px;
+	cursor: pointer;
 }
+
+// 【Breadcrumb.vue】面包屑
+.breadcrumb-item {
+	display: flex;
+	align-items: center;
+
+	.breadcrumb-icon {
+		margin-right: 6px;
+		font-size: 16px;
+	}
+}
+
+// *ToolBarRight.vue
+.tool-bar-ri {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0 30px;
+	.header-icon {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		width: 100px;
+		margin-right: 22px;
+		font-size: 20px;
+	}
+	.username {
+		margin: 0 20px 0 0;
+		font-size: 15px;
+	}
+}
+
+
+
+
+// 【Avatar.vue】头像
+.avatar {
+	width: 40px;
+	height: 40px;
+	overflow: hidden;
+	cursor: pointer;
+	border-radius: 50%;
+	border: 2px solid #0652DD;
+	img {
+		width: 100%;
+		height: 100%;
+	}
+}
+
+// SearchMenu.vue
+.layout-search-dialog{
+	:deep(.el-dialog){
+		background: rgb(0, 0, 0, 0.5);
+		border-radius: 0 !important;
+		box-shadow: unset !important;
+		.el-dialog__header {
+			border-bottom: none !important;
+		}
+	}
+	:deep(.el-autocomplete){
+		position: absolute;
+		top: 100px;
+		left: 50%;
+		width: 550px;
+		transform: translate(-50%);
+	}
+	.el-autocomplete__popper {
+		.el-icon {
+			position: relative;
+			top: 2px;
+			font-size: 16px;
+		}
+		span {
+			margin: 0 0 0 10px;
+			font-size: 14px;
+		}
+	}
+}
+
+// Message.vue
+.message-empty {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 236px;
+}
+.message-list {
+	display: flex;
+	flex-direction: column;
+	.message-item {
+		display: flex;
+		align-items: center;
+		padding: 20px 0;
+		border-bottom: 1px solid var(--el-border-color-light);
+		&:last-child {
+			border: none;
+		}
+		.message-icon {
+			width: 40px;
+			height: 40px;
+			margin: 0 20px 0 5px;
+		}
+		.message-content {
+			display: flex;
+			flex-direction: column;
+			.message-title {
+				margin-bottom: 5px;
+			}
+			.message-date {
+				font-size: 12px;
+				color: var(--el-text-color-secondary);
+			}
+		}
+	}
+}
+

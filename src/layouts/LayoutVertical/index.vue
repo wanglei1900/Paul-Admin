@@ -25,7 +25,7 @@
             </div>
         </el-aside>
         <el-container>
-            <el-header class="flex-space-between">
+            <el-header>
                 <ToolBarLeft />
                 <ToolBarRight />
             </el-header>

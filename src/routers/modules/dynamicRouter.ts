@@ -1,22 +1,21 @@
 /*
  * @Author: paul
  * @Date: 2022-11-20 21:57:04
- * @LastEditTime: 2022-11-22 23:23:05
+ * @LastEditTime: 2022-11-26 13:44:33
  * @LastEditors: your name
  ! @Description: 动态路由表
  * @FilePath: \Paul-Admin\src\routers\modules\dynamicRouter.ts
  * 🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀
  */
 
+import router from "@/routers";
+import { getFlatArr } from "@/utils/util";
 import { AuthStore } from "@/store/modules/auth";
 import { LOGIN_URL } from "@/config/config";
 import { ElNotification } from "element-plus";
-import router from "@/routers";
-import { getFlatArr } from "@/utils/util";
 
 // 引入 views 文件夹下所有的 vue 文件
 const modules = import.meta.glob("@/views/**/*.vue");
-console.log(modules);
 
 /* 初始化动态路由 */
 export const initDynamicRouter = async () => {

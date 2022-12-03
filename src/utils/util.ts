@@ -1,7 +1,7 @@
 /*
  * @Author: paul
  * @Date: 2022-11-14 22:33:46
- * @LastEditTime: 2022-11-24 22:50:56
+ * @LastEditTime: 2022-11-27 12:48:35
  * @LastEditors: your name
  * @Description: 常用公共方法
  * @FilePath: \Paul-Admin\src\utils\util.ts
@@ -51,11 +51,52 @@ export function getFlatArr(menuList: Menu.menuOptions[]) {
     }, [])
 }
 
-export function getKeepAliveRouterName(menuList: Menu.menuOptions[]){
-    let keepAliveArr:string[] = []
+/**
+ * @description: 使用递归，过滤需要缓存的路由
+ * @param {Menu} menuList
+ * @return {*}
+ */
+export function getKeepAliveRouterName(menuList: Menu.menuOptions[]) {
+    let keepAliveArr: string[] = []
     menuList.forEach(item => {
         item.meta.isKeepAlive && item.name && keepAliveArr.push(item.name)
         item.children?.length && getKeepAliveRouterName(item.children)
     });
     return keepAliveArr
+}
+
+/**
+ * @description: 使用递归，过滤出当前路径匹配的面包屑地址
+ * @param {string} path 当前访问地址
+ * @param {Menu} menuList 所有菜单列表
+ * @return array
+ */
+export function getCurrentBreadcrumb(path: string, menuList: Menu.menuOptions[]) {
+    let tempPath: Menu.menuOptions[] = []
+    try {
+        const getNodePath = (node: Menu.menuOptions) => {
+            tempPath.push(node)
+            if (node.path === path) throw new Error("Find It!");
+            if (node.children?.length) node.children.forEach(item => getNodePath(item))
+            tempPath.pop()
+        }
+        menuList.forEach(item => getNodePath(item))
+    } catch (error) {
+        return tempPath
+    }
+}
+
+/**
+ * @description: 双重递归找出所有面包屑存储到 pinia/vuex 中
+ * @param {Menu} menuList 所有菜单列表
+ * @return array
+ */
+export function getAllBreadcrumbList(menuList: Menu.menuOptions[]) {
+    let handleBreadcrumbList: { [key: string]: any } = {}
+    const loop = (menuItem: Menu.menuOptions) => {
+        if (menuItem.children?.length) menuItem.children.forEach(item => loop(item))
+        else handleBreadcrumbList[menuItem.path] = getCurrentBreadcrumb(menuItem.path, menuList)
+    }
+    menuList.forEach(item => loop(item))
+    return handleBreadcrumbList
 }

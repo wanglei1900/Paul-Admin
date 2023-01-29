@@ -15,7 +15,7 @@
                         active-text-color="#ffffff"
                         background-color="#1e272e"
                         :collapse="isCollapse"
-                        :collapse-transition="true"
+                        :collapse-transition="false"
                         :unique-opened="true"
                     >
                         <!-- 子菜单 -->
@@ -35,7 +35,6 @@
 </template>
 
 <script setup lang='ts' name="layout">
-import { computed } from 'vue';
 import { useRoute } from "vue-router";
 import { GlobalStore } from "@/store";
 import { AuthStore } from "@/store/modules/auth";
@@ -50,6 +49,7 @@ const authStore = AuthStore()
 const isCollapse = computed(() => globalStore.themeConfig.isCollapse)
 const activeMenu = computed(()=> route.path)
 const menuList = computed(()=> authStore.showMenuListGet)
+
 </script>
 
 <style lang='scss' scoped>

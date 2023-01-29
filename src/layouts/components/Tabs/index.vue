@@ -5,7 +5,7 @@
                 <el-tab-pane v-for="item in tabsMenuList" :key="item.path" :label="item.title" :name="item.path"
                     :closable="item.close">
                     <template #label>
-                        <el-icon v-if="item.icon && themeConfig.tabsIcon">
+                        <el-icon class="tabs-icon" v-show="item.icon && themeConfig.tabsIcon">
                             <component :is="item.icon"></component>
                         </el-icon>
                         {{ item.title }}
@@ -18,10 +18,10 @@
 </template>
 
 <script setup lang='ts'>
-import { ref, computed, watch } from 'vue';
 import { useRoute, useRouter } from "vue-router";
 import { GlobalStore } from "@/store";
 import { TabsStore } from "@/store/modules/tabs";
+import { KeepAliveStore } from "@/store/modules/keepAlive";
 import { TabsPaneContext,TabPaneName } from "element-plus";
 import MoreButtons from "./components/MoreButtons.vue";
 
@@ -29,20 +29,23 @@ const route = useRoute()
 const router = useRouter()
 const globalStore = GlobalStore()
 const tabsStore = TabsStore()
+const keepAliveStore = KeepAliveStore()
 
-const tabsMenuValue = ref(route.path)
+const tabsMenuValue = ref(route.fullPath)
 const tabsMenuList = computed(() => tabsStore.tabsMenuList)
 const themeConfig = computed(() => globalStore.themeConfig)
 
 // 监听留有的变化（防止浏览器后退/前进不变化 tabsMenuValue）
 watch(
-    () => route.path,
+    () => route.fullPath,
     () => {
-        tabsMenuValue.value = route.path
+        if (route.meta.isFull) return
+        tabsMenuValue.value = route.fullPath
         const tabParams = {
             icon: route.meta.icon as string,
             title: route.meta.title as string,
-            path: route.path,
+            path: route.fullPath,
+            name: route.name as string,
             close: !route.meta.isAffix
         }
         tabsStore.addTabs(tabParams)
@@ -54,14 +57,15 @@ watch(
 
 // 点击tab跳转路由(回调见饿了吗官网)
 const tabClick = (pane: TabsPaneContext) => {
-    let path = pane.props.name as string
-    router.push(path)
+    const fullPath = pane.props.name as string
+    router.push(fullPath)
 }
 
 // 移除Tab标签(回调见饿了吗官网)
-const tabRemove = (name: TabPaneName) => {
-    let isCurrent = name == route.path
-    tabsStore.removeTabs(name as string, isCurrent)
+const tabRemove = (fullPath: TabPaneName) => {
+    const name = tabsStore.tabsMenuList.find(item => item.path === fullPath)?.name || ""
+    keepAliveStore.removeKeepAliveName(name)
+    tabsStore.removeTabs(fullPath as string, fullPath === route.fullPath)
 }
 </script>
 

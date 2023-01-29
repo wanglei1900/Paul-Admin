@@ -1,7 +1,7 @@
 /*
  * @Author: paul
  * @Date: 2022-11-20 21:57:04
- * @LastEditTime: 2022-11-26 13:44:33
+ * @LastEditTime: 2022-12-04 15:53:26
  * @LastEditors: your name
  ! @Description: 动态路由表
  * @FilePath: \Paul-Admin\src\routers\modules\dynamicRouter.ts
@@ -50,7 +50,6 @@ export const initDynamicRouter = async () => {
 				router.addRoute("layout", item);
 			}
         })
-
 
     } catch (error) {
         // 当按钮和菜单 请求出错时，重定向到登录页

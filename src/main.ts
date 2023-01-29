@@ -14,6 +14,9 @@ import ElementPlus from 'element-plus'
 import * as Icons from "@element-plus/icons-vue";
 // element css
 import 'element-plus/dist/index.css'
+// 自定义指令
+import directives from "@/directives/index";
+
 // 引入已经创建好的pinia
 import pinia from "@/store";
 // 引入router
@@ -28,4 +31,4 @@ Object.keys(Icons).forEach(key => {
 
 
 
-app.use(router).use(ElementPlus).use(pinia).mount('#app')
+app.use(router).use(pinia).use(ElementPlus).use(directives).mount('#app')

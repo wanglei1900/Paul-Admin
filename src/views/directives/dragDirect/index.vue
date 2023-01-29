@@ -1,12 +1,12 @@
 <template>
-dragDirect
+	<div class="card content-box">
+		<span class="text">拖拽指令 🍇🍇🍇🍓🍓🍓</span>
+		<div v-draggable class="drag-box flex-center">我可以拖拽哦~</div>
+	</div>
 </template>
 
-<script setup lang='ts'>
-import { ref, reactive } from 'vue';
+<script setup lang="ts" name="dragDirect"></script>
 
-</script>
-
-<style lang='scss' scoped>
-
+<style scoped lang="scss">
+@import "./index.scss";
 </style>

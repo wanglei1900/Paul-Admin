@@ -1,7 +1,7 @@
 /*
  * @Author: paul
  * @Date: 2022-11-11 21:38:19
- * @LastEditTime: 2022-11-20 20:59:16
+ * @LastEditTime: 2023-01-26 16:31:44
  * @LastEditors: your name
  * @Description: api interface接口管理处
  * @FilePath: \Paul-Admin\src\api\interface\index.ts
@@ -18,9 +18,7 @@ export namespace Login {
         access_token: string
     }
     export interface ResAuthButtons {
-        [key: string]: {
-            [key: string]: boolean
-        }
+		[key: string]: string[];
     }
 }
 

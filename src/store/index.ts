@@ -1,7 +1,7 @@
 /*
  * @Author: paul
  * @Date: 2022-11-11 22:02:27
- * @LastEditTime: 2022-11-19 22:08:11
+ * @LastEditTime: 2023-01-27 14:17:52
  * @LastEditors: your name
  * @Description: pinia仓库
  * @FilePath: \Paul-Admin\src\store\index.ts
@@ -20,7 +20,11 @@ export const GlobalStore = defineStore({
     state: (): GlobalState => ({
         token: "",
         userInfo: "",
+		// element组件大小
+		assemblySize: "default",
         themeConfig: {
+            // 当前页面是否全屏
+            maximize: false,
             // 布局切换 ==>  纵向：vertical | 经典：classic | 横向：transverse | 分栏：columns
             layout: "vertical",
             // 默认 primary 主题颜色
@@ -43,8 +47,6 @@ export const GlobalStore = defineStore({
             tabsIcon: true,
             // 页脚
             footer: true,
-            // 当前页面是否全屏
-            maximize: false
         }
     }),
     actions: {

@@ -1,7 +1,7 @@
 /*
  * @Author: paul
  * @Date: 2022-11-13 21:32:14
- * @LastEditTime: 2022-11-13 21:39:06
+ * @LastEditTime: 2023-01-24 22:54:08
  * @LastEditors: your name
  * @Description: 环境文件
  * @FilePath: \Paul-Admin\src\utils\getEnv.ts
@@ -12,10 +12,12 @@ import fs from "fs";
 import path from "path";
 import dotenv from "dotenv";
 
+// ! 可以直接用来替换      import.meta.env.DEV: {boolean} 应用是否运行在开发环境
 export function isDevFn(mode: string): boolean {
     return mode === "development"
 }
 
+// ! 可以直接用来替换      import.meta.env.PROD: {boolean} 应用是否运行在生产环境。
 export function isProdFn(mode: string): boolean {
     return mode === "production"
 }

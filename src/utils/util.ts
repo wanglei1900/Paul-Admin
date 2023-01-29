@@ -1,7 +1,7 @@
 /*
  * @Author: paul
  * @Date: 2022-11-14 22:33:46
- * @LastEditTime: 2022-11-27 12:48:35
+ * @LastEditTime: 2023-01-27 21:44:31
  * @LastEditors: your name
  * @Description: 常用公共方法
  * @FilePath: \Paul-Admin\src\utils\util.ts
@@ -30,11 +30,11 @@ export function getSayHello() {
  * @param {Array} menuList 后端传过来的菜单列表
  * @return Array
  */
-export function getShowMenuList(menuList: Menu.menuOptions[]) {
-    let newMenuList: Menu.menuOptions[] = JSON.parse(JSON.stringify(menuList))
+export function getShowMenuList(menuList: Menu.MenuOptions[]) {
+    const newMenuList: Menu.MenuOptions[] = JSON.parse(JSON.stringify(menuList))
     return newMenuList.filter(item => {
         item.children?.length && (item.children = getShowMenuList(item.children))
-        return !item.meta.isHide
+        return !item.meta?.isHide
     })
 }
 
@@ -43,8 +43,9 @@ export function getShowMenuList(menuList: Menu.menuOptions[]) {
  * @param {Array} menuList 所有菜单列表
  * @return Array
  */
-export function getFlatArr(menuList: Menu.menuOptions[]) {
-    return menuList.reduce((prev: Menu.menuOptions[], current: Menu.menuOptions) => {
+export function getFlatArr(menuList: Menu.MenuOptions[]) {
+    const newMenuList: Menu.MenuOptions[] = JSON.parse(JSON.stringify(menuList));
+    return newMenuList.reduce((prev: Menu.MenuOptions[], current: Menu.MenuOptions) => {
         let flatArr = [...prev, current]
         if (current.children) flatArr = [...flatArr, ...getFlatArr(current.children)]
         return flatArr
@@ -56,47 +57,25 @@ export function getFlatArr(menuList: Menu.menuOptions[]) {
  * @param {Menu} menuList
  * @return {*}
  */
-export function getKeepAliveRouterName(menuList: Menu.menuOptions[]) {
-    let keepAliveArr: string[] = []
+export function getKeepAliveRouterName(menuList: Menu.MenuOptions[], keepAliveArr: string[] = []) {
     menuList.forEach(item => {
         item.meta.isKeepAlive && item.name && keepAliveArr.push(item.name)
-        item.children?.length && getKeepAliveRouterName(item.children)
+        item.children?.length && getKeepAliveRouterName(item.children, keepAliveArr)
     });
     return keepAliveArr
 }
 
 /**
- * @description: 使用递归，过滤出当前路径匹配的面包屑地址
- * @param {string} path 当前访问地址
- * @param {Menu} menuList 所有菜单列表
- * @return array
+ * @description 递归找出所有面包屑存储到 pinia/vuex 中
+ * @param {Array} menuList 所有菜单列表
+ * @param {Object} result 输出的结果
+ * @param {Array} parent 父级菜单
+ * @returns object
  */
-export function getCurrentBreadcrumb(path: string, menuList: Menu.menuOptions[]) {
-    let tempPath: Menu.menuOptions[] = []
-    try {
-        const getNodePath = (node: Menu.menuOptions) => {
-            tempPath.push(node)
-            if (node.path === path) throw new Error("Find It!");
-            if (node.children?.length) node.children.forEach(item => getNodePath(item))
-            tempPath.pop()
-        }
-        menuList.forEach(item => getNodePath(item))
-    } catch (error) {
-        return tempPath
+export function getAllBreadcrumbList(menuList: Menu.MenuOptions[], result: { [key: string]: any } = {}, parent = []) {
+    for (const item of menuList) {
+        result[item.path] = [...parent, item]
+        if (item.children) getAllBreadcrumbList(item.children, result, result[item.path])
     }
-}
-
-/**
- * @description: 双重递归找出所有面包屑存储到 pinia/vuex 中
- * @param {Menu} menuList 所有菜单列表
- * @return array
- */
-export function getAllBreadcrumbList(menuList: Menu.menuOptions[]) {
-    let handleBreadcrumbList: { [key: string]: any } = {}
-    const loop = (menuItem: Menu.menuOptions) => {
-        if (menuItem.children?.length) menuItem.children.forEach(item => loop(item))
-        else handleBreadcrumbList[menuItem.path] = getCurrentBreadcrumb(menuItem.path, menuList)
-    }
-    menuList.forEach(item => loop(item))
-    return handleBreadcrumbList
+    return result
 }

@@ -1,7 +1,7 @@
 /*
  * @Author: paul
  * @Date: 2022-11-12 13:37:00
- * @LastEditTime: 2022-11-26 13:45:31
+ * @LastEditTime: 2023-01-27 22:11:01
  * @LastEditors: your name
  * @Description: 路由器
  * @FilePath: \Paul-Admin\src\routers\index.ts
@@ -60,7 +60,7 @@ router.beforeEach(async (to, from, next) => {
     const globalStore = GlobalStore()
     if (!globalStore.token) return next({ path: LOGIN_URL, replace: true })
 
-    // todo5.如果没有菜单列表，就重新请求菜单列表并添加动态路由
+    // 5.如果没有菜单列表，就重新请求菜单列表并添加动态路由( next({ ...to, }) 会不停调用beforeEach直到找到to.matched)
     const authStore = AuthStore()
     if (!authStore.authMenuListGet.length) {
         await initDynamicRouter()
@@ -87,7 +87,6 @@ router.onError(error => {
         message: error.message
     })
 })
-
 
 export default router
 

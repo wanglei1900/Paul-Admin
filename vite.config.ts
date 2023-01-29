@@ -13,14 +13,21 @@ import VueSetupExtend from "vite-plugin-vue-setup-extend";
 // import importToCDN from "vite-plugin-cdn-import";
 
 
-// import AutoImport from "unplugin-auto-import/vite";
+import AutoImport from "unplugin-auto-import/vite";
 // import Components from "unplugin-vue-components/vite";
 // import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 
 // @see: https://vitejs.dev/config/
 export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
+
+	/* 
+		根据当前工作目录中的 `mode` 加载 .env 文件
+		第二个参数：process.cwd()表示返回运行当前脚本的工作目录的路径（current work directory）
+		设置第三个参数为 '' 来加载所有环境变量，而不管是否有 `VITE_` 前缀。
+	*/
 	const env = loadEnv(mode, process.cwd());
 	const viteEnv = wrapperEnv(env);
+	
 
 	return {
 		base: "./",
@@ -56,13 +63,18 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
 		},
 		plugins: [
 			vue(),
-			// createHtmlPlugin({
-			// 	inject: {
-			// 		data: {
-			// 			title: viteEnv.VITE_GLOB_APP_TITLE
-			// 		}
-			// 	}
-			// }),
+			// * 使用unplugin-auto-import插件自动引入(可以不用import也能使用ref，reactive类)
+			AutoImport({   // 注册并使用配置项
+				imports:['vue'],
+				dts:'src/auto-import.d.ts'    // 路径下自动生成文件夹存放全局指令
+			}),
+			createHtmlPlugin({
+				inject: {
+					data: {
+						title: viteEnv.VITE_GLOB_APP_TITLE
+					}
+				}
+			}),
 			// * 使用 svg 图标
 			// createSvgIconsPlugin({
 			// 	iconDirs: [resolve(process.cwd(), "src/assets/icons")],

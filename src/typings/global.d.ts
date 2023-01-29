@@ -1,7 +1,7 @@
 /*
  * @Author: paul
  * @Date: 2022-11-13 21:40:30
- * @LastEditTime: 2022-11-20 21:33:19
+ * @LastEditTime: 2023-01-26 16:38:43
  * @LastEditors: your name
  * @Description: 全局接口类型
  * @FilePath: \Paul-Admin\src\typings\global.d.ts
@@ -24,18 +24,19 @@ declare interface ViteEnv {
 
 // * Menu
 declare namespace Menu {
-	interface menuOptions {
+	interface MenuOptions {
 		path: string;
 		name: string;
 		component?: string | (() => Promise<any>);
 		redirect?: string;
 		meta: MetaProps;
-		children?: menuOptions[];
+		children?: MenuOptions[];
 	}
 	interface MetaProps {
 		icon: string;
 		title: string;
-		isLink: string;
+		activeMenu?: string;
+		isLink?: string;
 		isHide: boolean;
 		isFull: boolean;
 		isAffix: boolean;

@@ -1,7 +1,7 @@
 /*
  * @Author: paul
  * @Date: 2022-11-11 22:14:56
- * @LastEditTime: 2022-11-26 10:37:13
+ * @LastEditTime: 2023-01-26 22:17:33
  * @LastEditors: your name
  * @Description: pinia仓库 interface管理处
  * @FilePath: \Paul-Admin\src\store\interface\index.ts
@@ -10,7 +10,7 @@
 
 /* themeConfigProp */
 export interface ThemeConfigProps {
-	layout: string;
+	layout: LayoutType;
 	primary?: string;
 	isDark: boolean;
 	isGrey: boolean;
@@ -28,17 +28,20 @@ export interface ThemeConfigProps {
 export interface GlobalState {
 	token: string
 	userInfo: any
+	assemblySize: AssemblySizeType;
 	themeConfig: ThemeConfigProps;
 }
+
+export type AssemblySizeType = "default" | "small" | "large";
+
+export type LayoutType = "vertical" | "classic" | "transverse" | "columns";
 
 /* AuthState */
 export interface AuthState {
 	authButtonList: {
-		[key: string]: {
-			[key: string]: boolean
-		}
+		[key: string]: string[];
 	}
-	authMenuList: Menu.menuOptions[]
+	authMenuList: Menu.MenuOptions[]
 }
 
 /* tabsMenuProps */
@@ -46,10 +49,16 @@ export interface TabsMenuProps {
 	icon: string,
 	title: string,
 	path: string,
+	name: string,
 	close: boolean
 }
 
 /* TasState */
 export interface TabsState {
 	tabsMenuList: TabsMenuProps[]
+}
+
+/* keepAliveState */
+export interface keepAliveState {
+	keepAliveName: string[]
 }

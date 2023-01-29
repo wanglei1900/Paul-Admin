@@ -7,13 +7,44 @@
 }
 
 // 【Breadcrumb.vue】面包屑
-.breadcrumb-item {
+.breadcrumb-box {
 	display: flex;
 	align-items: center;
-
-	.breadcrumb-icon {
-		margin-right: 6px;
-		font-size: 16px;
+	padding-right: 50px;
+	overflow: hidden;
+	mask-image: linear-gradient(90deg, #000000 0%, #000000 calc(100% - 50px), transparent);
+	.el-breadcrumb {
+		white-space: nowrap;
+		.el-breadcrumb__item {
+			position: relative;
+			display: inline-block;
+			float: none;
+			.el-breadcrumb__inner {
+				display: inline-flex;
+				.breadcrumb-icon {
+					margin-top: 2px;
+					margin-right: 6px;
+					font-size: 16px;
+				}
+				.breadcrumb-title {
+					margin-top: 3px;
+				}
+			}
+			:deep(.el-breadcrumb__separator) {
+				position: relative;
+				top: -1px;
+			}
+		}
+	}
+}
+.no-icon {
+	.el-breadcrumb {
+		.el-breadcrumb__item {
+			top: -2px;
+			:deep(.el-breadcrumb__separator) {
+				top: 2px;
+			}
+		}
 	}
 }
 
@@ -23,6 +54,7 @@
 	align-items: center;
 	justify-content: center;
 	margin: 0 30px;
+
 	.header-icon {
 		display: flex;
 		align-items: center;
@@ -31,14 +63,12 @@
 		margin-right: 22px;
 		font-size: 20px;
 	}
+
 	.username {
 		margin: 0 20px 0 0;
 		font-size: 15px;
 	}
 }
-
-
-
 
 // 【Avatar.vue】头像
 .avatar {
@@ -47,7 +77,8 @@
 	overflow: hidden;
 	cursor: pointer;
 	border-radius: 50%;
-	border: 2px solid #0652DD;
+	border: 2px solid $theme-color;
+
 	img {
 		width: 100%;
 		height: 100%;
@@ -55,32 +86,37 @@
 }
 
 // SearchMenu.vue
-.layout-search-dialog{
-	:deep(.el-dialog){
+.layout-search-dialog {
+	:deep(.el-dialog) {
 		background: rgb(0, 0, 0, 0.5);
 		border-radius: 0 !important;
 		box-shadow: unset !important;
+
 		.el-dialog__header {
 			border-bottom: none !important;
 		}
 	}
-	:deep(.el-autocomplete){
+
+	:deep(.el-autocomplete) {
 		position: absolute;
 		top: 100px;
 		left: 50%;
 		width: 550px;
 		transform: translate(-50%);
 	}
-	.el-autocomplete__popper {
-		.el-icon {
-			position: relative;
-			top: 2px;
-			font-size: 16px;
-		}
-		span {
-			margin: 0 0 0 10px;
-			font-size: 14px;
-		}
+
+}
+
+.el-autocomplete__popper {
+	.el-icon {
+		position: relative;
+		top: 2px;
+		font-size: 16px;
+	}
+
+	span {
+		margin: 0 0 0 10px;
+		font-size: 14px;
 	}
 }
 
@@ -92,28 +128,35 @@
 	justify-content: center;
 	height: 236px;
 }
+
 .message-list {
 	display: flex;
 	flex-direction: column;
+
 	.message-item {
 		display: flex;
 		align-items: center;
 		padding: 20px 0;
 		border-bottom: 1px solid var(--el-border-color-light);
+
 		&:last-child {
 			border: none;
 		}
+
 		.message-icon {
 			width: 40px;
 			height: 40px;
 			margin: 0 20px 0 5px;
 		}
+
 		.message-content {
 			display: flex;
 			flex-direction: column;
+
 			.message-title {
 				margin-bottom: 5px;
 			}
+
 			.message-date {
 				font-size: 12px;
 				color: var(--el-text-color-secondary);
@@ -121,4 +164,3 @@
 		}
 	}
 }
-

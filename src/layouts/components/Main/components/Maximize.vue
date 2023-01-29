@@ -1,15 +1,11 @@
 <template>
     <div class="maximize" @click="exitMaximize">
-        <el-icon>
-            <Close />
-        </el-icon>
+        <el-icon><Close /></el-icon>
     </div>
 </template>
 
 <script setup lang='ts'>
-import { computed, watch } from 'vue';
 import { GlobalStore } from "@/store";
-import { tr } from 'element-plus/es/locale';
 
 const globalStore = GlobalStore()
 const themeConfig = computed(() => globalStore.themeConfig)

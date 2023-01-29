@@ -7,5 +7,4 @@ import login from "@/views/login/index.vue"
 </script>
 
 
-
 <style lang="scss" scoped></style>

@@ -1,6 +1,5 @@
 import axios, { AxiosInstance, AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-// import { showFullScreenLoading, tryHideFullScreenLoading } from "@/config/serviceLoading";
-import { AxiosCanceler } from "./helper/axiosCancel";
+import { showFullScreenLoading, tryHideFullScreenLoading } from "@/config/serviceLoading";
 import { ResultData } from "@/api/interface";
 import { ResultEnum } from "@/enums/httpEnum";
 import { checkStatus } from "./helper/checkStatus";
@@ -15,13 +14,10 @@ import router from "@/routers";
  * https://github.com/vuejs/pinia/discussions/664#discussioncomment-1329898
  * https://pinia.vuejs.org/core-concepts/outside-component-usage.html#single-page-applications
  */
-// const globalStore = GlobalStore();
-
-const axiosCanceler = new AxiosCanceler();
 
 const config = {
-	// 默认地址请求地址，可在 .env 开头文件中修改
-	baseURL: import.meta.env.VITE_API_URL as string,
+	// 默认地址请求地址，可在 .env 开头文件中修改,这里无需断言，vite-env.d.ts里已经作了判断
+	baseURL: import.meta.env.VITE_API_URL,
 	// 设置超时时间（10s）
 	timeout: ResultEnum.TIMEOUT as number,
 	// 跨域时候允许携带凭证
@@ -42,10 +38,8 @@ class RequestHttp {
 		this.service.interceptors.request.use(
 			(config: AxiosRequestConfig) => {
 				const globalStore = GlobalStore();
-				// * 将当前请求添加到 pending 中
-				axiosCanceler.addPending(config);
 				// * 如果当前请求不需要显示 loading,在 api 服务中通过指定的第三个参数: { headers: { noLoading: true } }来控制不显示loading，参见loginApi
-				// config.headers!.noLoading || showFullScreenLoading();
+				config.headers!.noLoading || showFullScreenLoading();
 				const token: string = globalStore.token;
 				return { ...config, headers: { ...config.headers, "x-access-token": token } };
 			},
@@ -60,12 +54,11 @@ class RequestHttp {
 		 */
 		this.service.interceptors.response.use(
 			(response: AxiosResponse) => {
-				const { data, config } = response;
+				const { data } = response;
 				const globalStore = GlobalStore();
-				// * 在请求结束后，移除本次请求，并关闭请求 loading
-				axiosCanceler.removePending(config);
-				// tryHideFullScreenLoading();
-				// * 登陆失效（code == 599）
+				// * 在请求结束后，并关闭请求 loading
+				tryHideFullScreenLoading();
+				// * 登陆失效（code == 401）
 				if (data.code == ResultEnum.OVERDUE) {
 					ElMessage.error(data.msg);
 					globalStore.setToken("");
@@ -82,7 +75,7 @@ class RequestHttp {
 			},
 			async (error: AxiosError) => {
 				const { response } = error;
-				// tryHideFullScreenLoading();
+				tryHideFullScreenLoading();
 				// 请求超时单独判断，因为请求超时没有 response
 				if (error.message.indexOf("timeout") !== -1) ElMessage.error("请求超时！请您稍后重试");
 				// 根据响应的错误状态码，做不同的处理

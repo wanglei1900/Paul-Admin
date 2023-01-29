@@ -1,12 +1,7 @@
 <template>
-watermarkDirect
+	<div class="card content-box" v-waterMarker="{ text: 'Paul Admin', textColor: 'rgba(180, 180, 180, 0.6)' }">
+		<span class="text">水印指令 🍇🍇🍇🍓🍓🍓</span>
+	</div>
 </template>
 
-<script setup lang='ts'>
-import { ref, reactive } from 'vue';
-
-</script>
-
-<style lang='scss' scoped>
-
-</style>
+<script setup lang="ts" name="watermarkDirect"></script>

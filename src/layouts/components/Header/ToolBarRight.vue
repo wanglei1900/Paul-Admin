@@ -1,9 +1,9 @@
 <template>
 <div class="tool-bar-ri">
     <div class="header-icon">
-        <SearchMenu />
-        <Message />
-        <FullScreen />
+        <SearchMenu id="searchMenu" />
+        <Message id="message" />
+        <FullScreen id="fullScreen" />
     </div>
     <span class="username">Paul</span>
     <Avatar />

@@ -1,5 +1,5 @@
 <template>
-    <el-dropdown trigger="click">
+    <el-dropdown trigger="click" id="avatar">
         <div class="avatar">
             <img src="@/assets/images/avatar.gif" alt="avatar">
         </div>

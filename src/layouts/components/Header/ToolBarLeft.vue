@@ -1,7 +1,7 @@
 <template>
     <div class="flex-center">
-        <CollapseIcon />
-        <Breadcrumb />
+        <CollapseIcon id="collapseIcon" />
+        <Breadcrumb id="breadcrumb" />
     </div>
 </template>
 

@@ -1,13 +1,13 @@
 
 <template>
     <el-container class="layout-vertical">
-        <el-aside>
+        <el-aside >
             <div class="menu" :style="{width: isCollapse ? '65px' : '210px'}">
                 <div class="logo flex-center">
                     <img src="@/assets/images/logo.svg" alt="logo">
                     <span v-show="!isCollapse">Paul Admin</span>
                 </div>
-                <el-scrollbar>
+                <el-scrollbar id="menusScrollbar">
                     <el-menu
                         :default-active="activeMenu"
                         :router="false"
@@ -17,6 +17,7 @@
                         :collapse="isCollapse"
                         :collapse-transition="false"
                         :unique-opened="true"
+                        
                     >
                         <!-- 子菜单 -->
                         <SubMenu :menuList="menuList" />

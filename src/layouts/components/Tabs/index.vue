@@ -12,7 +12,7 @@
                     </template>
                 </el-tab-pane>
             </el-tabs>
-            <MoreButtons />
+            <MoreButtons id="moreButtons" />
         </div>
     </div>
 </template>

@@ -68,7 +68,7 @@ const handleExceed: UploadProps['onExceed'] = (files) => {
   upload.value!.handleStart(file)
 }
 
-const handlerUpload = () => {
+const handlerUpload = async() => {
   if (!container.file.raw) return
   // 点了上传按钮，状态改为上传中...
   status.value = UploadStatusEnum.uploading
@@ -77,7 +77,7 @@ const handlerUpload = () => {
   console.log('文件分了多少片：', fileChunkList.length)
 
   // 文件hash
-  // container.hash = await calculateHash(fileChunkList)
+  container.hash = await calculateHash(fileChunkList)
   console.log('文件hash是：', container.hash)
 
   // upload.value!.submit()
@@ -98,6 +98,8 @@ const createFileChunk = (file: UploadRawFile, size = SIZE) => {
     })
     cur += size
   }
+  console.log('fileChunkList',fileChunkList);
+  
   return fileChunkList
 }
 
@@ -107,14 +109,21 @@ const createFileChunk = (file: UploadRawFile, size = SIZE) => {
  * 导致页面假死状态，所以我们使用 web-worker 在 worker 线程计算 hash，这样用户仍可以在主界面正常的交互
  * @Author   Author
  * @DateTime 2021-12-31T14:19:59+0800
- * @param    {[type]}                 fileChunkList [description]
+ * @param    {{ file: Blob; }[]} fileChunkList
  * @return   {[type]}                               [description]
  */
-const calculateHash = (fileChunkList) => {
-  return new Promise((resolve) => {
+
+
+const calculateHash = (fileChunkList:{ file: Blob; }[]) => {
+
+  console.log('生成hashfileChunkList',fileChunkList);
+  
+  return new Promise<string>((resolve) => {
     container.worker = new Worker('/hash.js')
     container.worker.postMessage({ fileChunkList })
-    container.worker.onmessage = (e) => {
+    container.worker.onmessage = (e:any) => {
+      console.log('calculateHash_Worker接收的参数',e);
+      
       const { percentage, hash } = e.data
       hashPercentage.value = percentage.toFixed(2)
       if (hash) {

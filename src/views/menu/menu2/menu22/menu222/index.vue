@@ -76,7 +76,7 @@ const handlerUpload = async() => {
   const fileChunkList = createFileChunk(container.file.raw)
   console.log('文件分了多少片：', fileChunkList.length)
 
-  // 文件hash
+  // 通过webwork计算出，文件hash
   container.hash = await calculateHash(fileChunkList)
   console.log('文件hash是：', container.hash)
 
@@ -99,7 +99,6 @@ const createFileChunk = (file: UploadRawFile, size = SIZE) => {
     cur += size
   }
   console.log('fileChunkList',fileChunkList);
-  
   return fileChunkList
 }
 
@@ -114,18 +113,19 @@ const createFileChunk = (file: UploadRawFile, size = SIZE) => {
  */
 
 
-const calculateHash = (fileChunkList:{ file: Blob; }[]) => {
-
-  console.log('生成hashfileChunkList',fileChunkList);
-  
+const calculateHash = (fileChunkList:{ file: Blob; }[]) => {  
   return new Promise<string>((resolve) => {
+    // 开启worker
     container.worker = new Worker('/hash.js')
+    // 向worker线程传入参数（注意传入的是对象，使用了解构下发）
     container.worker.postMessage({ fileChunkList })
+    // 接受来自worker线程的 加工后的回复
     container.worker.onmessage = (e:any) => {
       console.log('calculateHash_Worker接收的参数',e);
       
       const { percentage, hash } = e.data
       hashPercentage.value = percentage.toFixed(2)
+      // 若得到哈希值，则resolve返回
       if (hash) {
         resolve(hash)
       }

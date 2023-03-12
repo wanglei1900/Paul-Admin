@@ -49,7 +49,6 @@ const container = reactive<container>({
 })
 
 
-
 const handleUpload: UploadProps['onChange'] = (uploadFile, uploadFiles) => {
   console.log('uploadFile', uploadFile);
   console.log('uploadFile.raw', uploadFile.raw);
@@ -68,7 +67,7 @@ const handleExceed: UploadProps['onExceed'] = (files) => {
   upload.value!.handleStart(file)
 }
 
-const handlerUpload = async() => {
+const handlerUpload = async () => {
   if (!container.file.raw) return
   // 点了上传按钮，状态改为上传中...
   status.value = UploadStatusEnum.uploading
@@ -80,7 +79,7 @@ const handlerUpload = async() => {
   container.hash = await calculateHash(fileChunkList)
   console.log('文件hash是：', container.hash)
 
-  // upload.value!.submit()
+  upload.value!.submit()
 }
 // 生成文件切片
 /**
@@ -98,7 +97,7 @@ const createFileChunk = (file: UploadRawFile, size = SIZE) => {
     })
     cur += size
   }
-  console.log('fileChunkList',fileChunkList);
+  console.log('fileChunkList', fileChunkList);
   return fileChunkList
 }
 
@@ -113,16 +112,16 @@ const createFileChunk = (file: UploadRawFile, size = SIZE) => {
  */
 
 
-const calculateHash = (fileChunkList:{ file: Blob; }[]) => {  
+const calculateHash = (fileChunkList: { file: Blob; }[]) => {
   return new Promise<string>((resolve) => {
     // 开启worker
     container.worker = new Worker('/hash.js')
-    // 向worker线程传入参数（注意传入的是对象，使用了解构下发）
+    // 向worker线程传入参数（注意传入的是对象，使用了解构写法）
     container.worker.postMessage({ fileChunkList })
     // 接受来自worker线程的 加工后的回复
-    container.worker.onmessage = (e:any) => {
-      console.log('calculateHash_Worker接收的参数',e);
-      
+    container.worker.onmessage = (e: any) => {
+      console.log('calculateHash_Worker接收的参数', e);
+
       const { percentage, hash } = e.data
       hashPercentage.value = percentage.toFixed(2)
       // 若得到哈希值，则resolve返回

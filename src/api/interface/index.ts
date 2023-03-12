@@ -1,10 +1,10 @@
 /*
  * @Author: paul
  * @Date: 2022-11-11 21:38:19
- * @LastEditTime: 2023-02-03 23:00:16
+ * @LastEditTime: 2023-03-12 23:37:57
  * @LastEditors: your name
  * @Description: api interface接口管理处
- * @FilePath: \Paul-Admin\src\api\interface\index.ts
+ * @FilePath: /Paul-Admin/src/api/interface/index.ts
  * 🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀
  */
 
@@ -93,6 +93,14 @@ export namespace User {
 export namespace Upload {
 	export interface ResFileUrl {
 		fileUrl: string;
+	}
+	export interface A {
+		url: string,
+		method: string,
+		data?: any,
+		headers?: Record<string, string>
+		onProgress?:any,
+		
 	}
 }
 

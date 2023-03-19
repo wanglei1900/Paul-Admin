@@ -1,7 +1,7 @@
 /*
  * @Author: paul
  * @Date: 2023-02-06 22:45:04
- * @LastEditTime: 2023-03-12 23:22:45
+ * @LastEditTime: 2023-03-19 23:32:32
  * @LastEditors: your name
  * @Description: 文件上传管理
  * @FilePath: /Paul-Admin/src/api/modules/upload.ts
@@ -23,7 +23,7 @@ export const uploadVideo = (params: FormData) => {
 }
 
 // * 大文件上传的单独的request
-function request({ url, method = 'post', data, headers = {}, onProgress = (e) => e, requestList }) {
+export function bigUploadRequest({ url, method = 'post', data, headers = {}, onProgress = (e: any) => e, requestList }: Upload.specialRequest): Promise<Upload.verifyUpload> {
 	return new Promise((resolve) => {
 		const xhr = new XMLHttpRequest()
 		// 一个无符号长整型（unsigned long）数字，表示该请求的最大请求时间（毫秒），若超出该时间，请求会自动终止。
@@ -33,19 +33,21 @@ function request({ url, method = 'post', data, headers = {}, onProgress = (e) =>
 		Object.keys(headers).forEach((key) =>
 			xhr.setRequestHeader(key, headers[key])
 		)
-		xhr.ontimeout = (e) => {
+		xhr.ontimeout = (e: ProgressEvent) => {
 			console.log('请求超时')
 		}
 		xhr.send(data)
 		// XMLHttpRequest请求成功完成时触发；
-		xhr.onload = (e) => {
+		xhr.onload = (e: ProgressEvent) => {
 			// 将请求成功的 xhr 从列表中删除
 			if (requestList) {
 				const xhrIndex = requestList.findIndex((item) => item === xhr)
 				requestList.splice(xhrIndex, 1)
 			}
+			let target = <XMLHttpRequest>e.target
+			let result = JSON.parse(target.response)
 			resolve({
-				data: e.target.response,
+				result
 			})
 		}
 		// 当请求结束时触发, 无论请求成功(load)还是失败(abort 或 error)。也可以使用 onloadend 属性。

@@ -1,10 +1,10 @@
 /**
  * @Author: paul
  * @Date: 2023-03-06 22:30:25
- * @LastEditTime: 2023-03-08 17:23:00
+ * @LastEditTime: 2023-03-15 22:51:13
  * @LastEditors: your name
  * @Description: web-worker 线程页面
- * @FilePath: \Paul-Admin\public\hash.js
+ * @FilePath: /Paul-Admin/public/hash.js
  * @🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀
  */
 
@@ -27,7 +27,7 @@ self.importScripts('./spark-md5.min.js')
  */
 self.onmessage = e => {
 	const { fileChunkList } = e.data
-	console.log('fileChunkList',fileChunkList);
+	// console.log('fileChunkList',fileChunkList);
 	// 创建ArrayBuffer对象
 	const spark = new self.SparkMD5.ArrayBuffer()
 	// 定义百分比
@@ -38,7 +38,7 @@ self.onmessage = e => {
 		// 创建FileReader，准备读取文件
 		const reader = new FileReader()
 		// fileChunkList的数组里的碎片fileChunk 的数据结构  { file: Blob }
-		console.log(fileChunkList[index].file);
+		// console.log(fileChunkList[index].file);
 		// FileReader.readAsArrayBuffer()	开始读取指定的 Blob中的内容，一旦完成，result 属性中保存的将是被读取文件的 ArrayBuffer 数据对象。
 		// 将fileChunkList的数组 依次转化为ArrayBuffer
 		reader.readAsArrayBuffer(fileChunkList[index].file)

@@ -1,14 +1,15 @@
 /*
  * @Author: paul
  * @Date: 2022-11-11 21:38:19
- * @LastEditTime: 2023-03-12 23:37:57
+ * @LastEditTime: 2023-03-17 22:26:23
  * @LastEditors: your name
  * @Description: api interface接口管理处
  * @FilePath: /Paul-Admin/src/api/interface/index.ts
  * 🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀
  */
 
-import { Upload } from "@element-plus/icons-vue";
+// import { Upload } from "@element-plus/icons-vue";
+import type { UploadFile, UploadInstance, UploadProps, UploadRawFile } from 'element-plus'
 
 // *登录模块
 export namespace Login {
@@ -94,13 +95,37 @@ export namespace Upload {
 	export interface ResFileUrl {
 		fileUrl: string;
 	}
-	export interface A {
+	export interface Container {
+		file: UploadFile;
+		hash: string;
+		worker: any;
+	}
+	export interface FileChunk {
+		file: Blob;
+	}
+	export interface specialRequest {
 		url: string,
-		method: string,
-		data?: any,
+		method?: string,
+		data: any,
 		headers?: Record<string, string>
-		onProgress?:any,
-		
+		onProgress?: any,
+		requestList?: XMLHttpRequest[],
+	}
+
+	export interface verifyUpload {
+		result: {
+			shouldUpload: boolean,
+			uploadedList: string[]
+		}
+	}
+
+	export interface data {
+		fileHash: string,
+		index: number,
+		hash: string,
+		chunk: Blob,
+		size: number,
+		percentage: number,
 	}
 }
 

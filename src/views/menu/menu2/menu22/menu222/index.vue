@@ -14,6 +14,7 @@
 				<span>计算文件hash进度： {{ hashPercentage }}%</span>
 				<br /><br />
 				<span>上传进度：{{ fakeUploadPercentage }}%</span>
+				<el-progress :text-inside="true" :stroke-width="26" :percentage="fakeUploadPercentage" />
 				<div class="el-upload__tip text-red">限制一个文件, 新文件将会覆盖原文件</div>
 			</template>
 		</el-upload>
@@ -21,7 +22,7 @@
 </template>
 
 <script setup lang="ts" name="menu222">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { ElMessage } from 'element-plus'
 import type { UploadInstance, UploadProps, UploadRawFile } from 'element-plus'
 import { Upload } from "@/api/interface";
@@ -33,7 +34,7 @@ const upload = ref<UploadInstance>()
 // 当前的请求xhr组成的数组
 const requestListArr = ref<XMLHttpRequest[]>([])
 // 组装的filechunk分段文件
-let data = reactive<Upload.data[]>([])
+let data = ref<Upload.data[]>([])
 const status = ref<string>(UploadStatusEnum.wait)
 // 生成文件hash的进度
 const hashPercentage = ref(0)
@@ -43,7 +44,7 @@ const fakeUploadPercentage = ref(0)
 const container = reactive<Upload.Container>({
 	file: {
 		name: '',
-		percentage: undefined,
+		percentage: 0,
 		status: UploadStatusEnum.ready,
 		size: 0,
 		url: undefined,
@@ -54,18 +55,20 @@ const container = reactive<Upload.Container>({
 	worker: null,
 })
 
-
 // 计算：文件上传的进度
 const uploadPercentage = computed({
 	get() {
-		if (!container.file || !data.length) return 0
-		const loaded = data.map(item => item.size * item.percentage).reduce((acc, cur) => acc + cur)
+		if (!container.file || !data.value.length) return 0
+		const loaded = data.value.map(item => item.size * item.percentage).reduce((acc, cur) => { return acc + cur })
+		console.log('loaded', loaded);
+
 		return parseInt((loaded / container.file.size!).toFixed(2))
 	},
 	set(value) {
 		return value
 	}
 })
+
 // 计算：上传按钮是否可以点击
 const uploadDisabled = computed(() => {
 	const disabledStatus: string[] = [UploadStatusEnum.pause, UploadStatusEnum.uploading]
@@ -79,6 +82,7 @@ watch(uploadPercentage, (newValue) => {
 		fakeUploadPercentage.value = newValue
 	}
 })
+
 
 
 // 选择了文件
@@ -108,7 +112,7 @@ const handlerUpload = async () => {
 	)
 
 	// 组装的filechunk数据先置空
-	data = []
+	data.value = []
 
 	// 服务器已经有完整文件了
 	if (!shouldUpload) {
@@ -118,7 +122,7 @@ const handlerUpload = async () => {
 		return ElMessage.success('秒传：上传成功')
 	}
 
-	data = fileChunkList.map(({ file }, index) => ({
+	data.value = fileChunkList.map(({ file }, index) => ({
 		fileHash: container.hash,
 		index,
 		hash: `${container.hash}-${index}`,
@@ -127,7 +131,7 @@ const handlerUpload = async () => {
 		// 如果已上传切片数组uploadedList中包含这个切片，则证明这个切片之前已经上传成功了，进度设为100。
 		percentage: uploadedList.includes(index.toString()) ? 100 : 0,
 	}))
-
+	console.log('数组', data);
 	uploadChunks(uploadedList)
 }
 
@@ -184,7 +188,6 @@ const createFileChunk = (file: UploadRawFile, size = SIZE) => {
 		})
 		cur += size
 	}
-	console.log('fileChunkList', fileChunkList);
 	return fileChunkList
 }
 
@@ -255,7 +258,7 @@ const verifyUpload = async (filename: string, fileHash: string) => {
  * @return {*}
  */
 const uploadChunks = async (uploadedList: string[] = []) => {
-	const requestList = data.filter(({ hash }) => !uploadedList.includes(hash))
+	const requestList = data.value.filter(({ hash }) => !uploadedList.includes(hash))
 		.map(({ chunk, hash, index }) => {
 			const formData = new FormData()
 			// 切片文件
@@ -272,7 +275,7 @@ const uploadChunks = async (uploadedList: string[] = []) => {
 			bigUploadRequest({
 				url: 'http://localhost:9999',
 				data: formData,
-				onProgress: createProgressHandler(index, data[index]),
+				onProgress: createProgressHandler(index, data.value[index]),
 				requestList: requestListArr.value,
 			})
 		)
@@ -282,7 +285,7 @@ const uploadChunks = async (uploadedList: string[] = []) => {
 
 	// 之前上传的切片数量 + 本次上传的切片数量 = 所有切片数量时
 	// 切片并发上传完以后，发个请求告诉后端：合并切片
-	if (uploadedList.length + requestList.length === data.length) {
+	if (uploadedList.length + requestList.length === data.value.length) {
 		mergeRequest()
 	}
 }
@@ -300,7 +303,6 @@ const mergeRequest = async () => {
 			filename: container.file.name,
 		}),
 	})
-	fakeUploadPercentage.value = 100
 	ElMessage.success('上传成功')
 	status.value = UploadStatusEnum.wait
 }
